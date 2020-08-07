@@ -22,6 +22,19 @@ GO111MODULE=off go get github.com/displague/github-labeller
 **First**, make sure `labels.json` exists and has all of the labels you want to
 add to your repositories.
 
+If `repos` is not present in the file, the labels provided will be added to all
+repositories in the organization.
+
+```json
+{
+  "repos": ["foo", "bar"],
+  "labels": [{"name":"labelA", "color": "b0b0b0", "description": "Label A"}]
+}
+```
+
+
+Then run `github-labeller` with a `GITHUB_TOKEN` set in the environment:
+
 ```console
 GITHUB_TOKEN=... github-labeller ORG
 ```
