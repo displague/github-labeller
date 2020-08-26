@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 
+	"github.com/ghodss/yaml"
 	"github.com/google/go-github/v32/github"
 	"golang.org/x/oauth2"
 )
@@ -30,12 +30,39 @@ func usage() {
 	fmt.Printf("Usage: %s ORGANIZATION\n", os.Args[0])
 }
 
+const (
+	configFilename = "labels.json"
+)
+
+type Config struct {
+	Repositories []string       `json:"repos"`
+	Labels       []github.Label `json:"labels"`
+}
+
+func parseConfig(file string, config *Config) error {
+	rawLabels, err := ioutil.ReadFile(file)
+	if err != nil {
+		return err
+	}
+
+	err = yaml.Unmarshal(rawLabels, config)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func main() {
 	if len(os.Args) != 2 {
 		usage()
 		return
 	}
 
+	config := Config{}
+	err := parseConfig(configFilename, &config)
+	if err != nil {
+		panic(err)
+	}
 	ctx := context.Background()
 
 	client, err := authenticatedClient(ctx)
@@ -45,32 +72,27 @@ func main() {
 
 	org := os.Args[1]
 
-	repos, _, err := client.Repositories.List(ctx, org, nil)
-	if err != nil {
-		panic(err)
-	}
+	repoNames := config.Repositories
 
-	rawLabels, err := ioutil.ReadFile("labels.json")
-	if err != nil {
-		panic(err)
-	}
-
-	labels := []github.Label{}
-	err = json.Unmarshal(rawLabels, &labels)
-	if err != nil {
-		panic(err)
+	if config.Repositories == nil {
+		repos, _, err := client.Repositories.List(ctx, org, nil)
+		if err != nil {
+			panic(err)
+		}
+		for _, r := range repos {
+			repoNames = append(repoNames, r.GetName())
+		}
 	}
 
 next_repo:
-	for _, repo := range repos {
-		fmt.Printf("\nUpdating repository %s/%s\n", org, repo.GetName())
+	for _, repo := range repoNames {
+		fmt.Printf("\nUpdating repository %s/%s\n", org, repo)
 
-		for _, label := range labels {
+		for _, label := range config.Labels {
 			fmt.Printf("* %s: %s", label.GetName(), label.GetDescription())
-			if _, resp, err := client.Issues.CreateLabel(ctx, org, repo.GetName(), &label); err != nil {
+			if _, resp, err := client.Issues.CreateLabel(ctx, org, repo, &label); err != nil {
 				if resp.StatusCode == http.StatusForbidden {
 					fmt.Printf(" (403, skipping repo)\n")
-
 					continue next_repo
 				}
 

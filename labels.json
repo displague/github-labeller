@@ -1,47 +1,49 @@
-[
-  {
-    "name": "P1",
-    "color": "fc49e7",
-    "description": "Highest priority"
-  },
-  {
-    "name": "P2",
-    "description": "Medium priority",
-    "color": "ffa836"
-  },
-  {
-    "name": "P3",
-    "description": "Low priority",
-    "color": "b6d157"
-  },
-  {
-    "name": "area/ci-cd-release",
-    "color": "30f43e",
-    "description": "Related to the integration, deployment, or release processes"
-  },
-  {
-    "name": "size/S",
-    "color": "2c4eaa",
-    "description": "estimate of the amount of work to address the issue"
-  },
-  {
-    "name": "size/M",
-    "color": "2c4eaa",
-    "description": "estimate of the amount of work to address the issue"
-  },
-  {
-    "name": "size/L",
-    "color": "2c4eaa",
-    "description": "estimate of the amount of work to address the issue"
-  },
-  {
-    "name": "size/XS",
-    "color": "2c4eaa",
-    "description": "estimate of the amount of work to address the issue"
-  },
-  {
-    "name": "size/XL",
-    "color": "2c4eaa",
-    "description": "estimate of the amount of work to address the issue"
-  }
-]
+{
+  "labels": [
+    {
+      "name": "P1",
+      "color": "fc49e7",
+      "description": "Highest priority"
+    },
+    {
+      "name": "P2",
+      "description": "Medium priority",
+      "color": "ffa836"
+    },
+    {
+      "name": "P3",
+      "description": "Low priority",
+      "color": "b6d157"
+    },
+    {
+      "name": "area/ci-cd-release",
+      "color": "30f43e",
+      "description": "Related to the integration, deployment, or release processes"
+    },
+    {
+      "name": "size/S",
+      "color": "2c4eaa",
+      "description": "estimate of the amount of work to address the issue"
+    },
+    {
+      "name": "size/M",
+      "color": "2c4eaa",
+      "description": "estimate of the amount of work to address the issue"
+    },
+    {
+      "name": "size/L",
+      "color": "2c4eaa",
+      "description": "estimate of the amount of work to address the issue"
+    },
+    {
+      "name": "size/XS",
+      "color": "2c4eaa",
+      "description": "estimate of the amount of work to address the issue"
+    },
+    {
+      "name": "size/XL",
+      "color": "2c4eaa",
+      "description": "estimate of the amount of work to address the issue"
+    }
+  ]
+}
